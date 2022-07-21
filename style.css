@@ -14,7 +14,7 @@ body {
   font-family: var(--font);
   color: var(--text-color);
   background-color: azure;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smooimging: antialiased;
 }
 
 .sr-only {
@@ -28,7 +28,6 @@ body {
 }
 
 button {
-  background-color: var(--primary-color);
   border: none;
   padding: 0.25rem 0.5rem;
   font-size: 1rem;
@@ -63,9 +62,82 @@ header h1 {
 header div .search {
   border-radius: 0.4rem 0 0 0.4rem;
   border: 1px solid #ccc;
-  padding: 0 .4rem;
+  padding: 0 0.4rem;
 }
 
 header div button {
   border-radius: 0 0.4rem 0.4rem 0;
+  background-color: var(--primary-color);
+}
+
+header div button:hover {
+  filter: brightness(1.1);
+}
+
+table {
+  width: 100%;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  margin: 1rem 0;
+}
+
+table th {
+  background-color: var(--primary-color);
+  font-weight: normal;
+  text-align: left;
+  padding: 0.5rem 1.5rem;
+}
+
+table th:first-child {
+  border-radius: 0.4rem 0 0 0;
+}
+
+table th:last-child {
+  border-radius: 0 0.4rem 0 0;
+}
+
+table td {
+  padding: 1rem 1.5rem;
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: lightskyblue;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: lightblue;
+}
+
+table tr button {
+  background-color: transparent;
+  color: red;
+}
+
+table img {
+  width: 3.125rem;
+  height: 3.125rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+table .profile {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+table a {
+  text-decoration: none;
+}
+
+table a p {
+  font-weight: 700;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+table a span {
+  font-weight: normal;
+  color: var(--text-color);
+  font-size: 1rem;
 }
