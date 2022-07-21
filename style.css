@@ -1,0 +1,71 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --font: "Poppins", sans-serif;
+  --primary-color: hsl(194, 100%, 63%);
+  --text-color: #303030;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text-color);
+  background-color: azure;
+  -webkit-font-smoothing: antialiased;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+button {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+#app {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header div {
+  display: flex;
+  align-items: stretch;
+}
+
+header h1 {
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+header div .search {
+  border-radius: 0.4rem 0 0 0.4rem;
+  border: 1px solid #ccc;
+  padding: 0 .4rem;
+}
+
+header div button {
+  border-radius: 0 0.4rem 0.4rem 0;
+}
