@@ -1,3 +1,19 @@
+export class GithubUser {
+  static async search(username) {
+    const endPoint = `https://api.github.com/users/${username}`
+    const data = await fetch(endPoint)
+    const { login, name, public_repos, followers } = await data.json()
+    return ({
+      login,
+      name,
+      public_repos,
+      followers,
+    })
+  }
+}
+
+
+
 export class Favorites {
 
   constructor(root) {
@@ -18,11 +34,36 @@ export class Favorites {
   }
 }
 
+
+
 export class FavoritesView extends Favorites {
   constructor(root) {
     super(root)
     this.tbody = this.root.querySelector("table tbody")
   }
+
+  onAdd() {
+    const addButton = this.root.querySelector(".search button")
+    addButton.onclick = () => {
+      const { value } = this.root.querySelector(".search input")
+      this.add(value)
+    }
+  }
+
+  async add(username) {
+    try {
+      const user = await GithubUser.search(username)
+      if (user.login === undefined) {
+        throw new Error("Usuário não encontrado")
+      }
+
+      this.entries = [user, ...this.entries]
+    }
+    catch { error => console.log(error) }
+
+  }
+
+
 
   update() {
     this.removeAlltr()
