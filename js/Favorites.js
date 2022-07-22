@@ -1,39 +1,48 @@
 export class Favorites {
+
   constructor(root) {
     this.root = document.querySelector(root)
     this.load()
   }
 
   load() {
-    const entries = [
-      {
-        login: 'Mati-Pereira',
-        name: "Matheus Rodrigues",
-        public_repos: "20",
-        followers: "1000s"
-      },
-      {
-        login: 'Lucas',
-        name: "Matheus Rodrigues",
-        public_repos: "20",
-        followers: "1000s"
-      },
-    ]
-    this.entries = entries
+    this.entries = JSON.parse(localStorage.getItem("@github-favorites: ")) || []
+  }
+
+  delete(user) {
+    // Higher order functions (map, find, reduce)
+    const filteredEntries = this.entries
+      .filter(entry => entry.login !== user.login)
+    this.entries = filteredEntries
+    this.update()
   }
 }
 
 export class FavoritesView extends Favorites {
   constructor(root) {
     super(root)
+    this.tbody = this.root.querySelector("table tbody")
   }
 
   update() {
     this.removeAlltr()
     this.entries.forEach(user => {
       const row = this.createRow()
-      console.log(row);
+      row.querySelector(".profile img").src = `https://github.com/${user.login}.png`
+      row.querySelector(".profile img").alt = `Imagem de ${user.name}`
+      row.querySelector(".profile p").textContent = user.name
+      row.querySelector(".profile span").textContent = user.login
+      row.querySelector(".repositories").textContent = user.public_repos
+      row.querySelector(".followers").textContent = user.followers
+      row.querySelector(".button").onclick = () => {
+        const isOK = confirm("Tem certeza que quer deletar ")
+        if (isOK) {
+          this.delete(user)
+        }
+      }
+      this.tbody.append(row)
     })
+
   }
 
   createRow() {
@@ -45,10 +54,10 @@ export class FavoritesView extends Favorites {
             <p>Matheus</p>
             <span>olá</span>
         </td>
-        <td>100</td>
-        <td>2000</td>
+        <td class="repositories"></td>
+        <td class="followers"></td>
         <td>
-        <button>&times;</button>
+        <button class="button">&times;</button>
         </td>
         `
     tr.innerHTML = content
@@ -56,8 +65,7 @@ export class FavoritesView extends Favorites {
   }
 
   removeAlltr() {
-    const tbody = this.root.querySelector("table tbody")
-    tbody.querySelectorAll('tr')
+    this.tbody.querySelectorAll('tr')
       .forEach((tr) => {
         tr.remove()
         console.log(tr);
