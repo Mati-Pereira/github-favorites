@@ -1,21 +1,6 @@
-export class GithubUser {
-  static async search(username) {
-    const endPoint = `https://api.github.com/users/${username}`
-    const data = await fetch(endPoint)
-    const { login, name, public_repos, followers } = await data.json()
-    return ({
-      login,
-      name,
-      public_repos,
-      followers,
-    })
-  }
-}
-
-
+import { GithubUser } from "./GithubUser.js"
 
 export class Favorites {
-
   constructor(root) {
     this.root = document.querySelector(root)
     this.load()
@@ -25,21 +10,48 @@ export class Favorites {
     this.entries = JSON.parse(localStorage.getItem("@github-favorites: ")) || []
   }
 
+  save() {
+    localStorage.setItem("@github-favorites: ", JSON.stringify(this.entries))
+  }
+
+  async add(username) {
+
+    try {
+      const userExists = this.entries.find(entry => entry.login === username)
+      if (userExists) {
+        throw new Error("Usuário já cadastrado")
+      }
+      const user = await GithubUser.search(username)
+      if (user.login === undefined) {
+        throw new Error("Usuário não encontrado")
+      }
+      this.entries = [user, ...this.entries]
+      this.update()
+      this.save()
+    }
+
+    catch {
+      error => console.log(error)
+    }
+  }
+
   delete(user) {
-    // Higher order functions (map, find, reduce)
     const filteredEntries = this.entries
       .filter(entry => entry.login !== user.login)
     this.entries = filteredEntries
     this.update()
+    this.save()
   }
 }
 
-
-
 export class FavoritesView extends Favorites {
+  
   constructor(root) {
+    
     super(root)
     this.tbody = this.root.querySelector("table tbody")
+    this.update()
+    this.onAdd()
   }
 
   onAdd() {
@@ -49,21 +61,6 @@ export class FavoritesView extends Favorites {
       this.add(value)
     }
   }
-
-  async add(username) {
-    try {
-      const user = await GithubUser.search(username)
-      if (user.login === undefined) {
-        throw new Error("Usuário não encontrado")
-      }
-
-      this.entries = [user, ...this.entries]
-    }
-    catch { error => console.log(error) }
-
-  }
-
-
 
   update() {
     this.removeAlltr()
@@ -83,24 +80,23 @@ export class FavoritesView extends Favorites {
       }
       this.tbody.append(row)
     })
-
   }
 
   createRow() {
     const tr = document.createElement("tr")
     const content = `
     <td class="profile">
-          <img src="https://github.com/Mati-Pereira.png" alt="profile-picture" >
-          <a href="https://github.com/Mati-Pereira">
-            <p>Matheus</p>
-            <span>olá</span>
-        </td>
-        <td class="repositories"></td>
-        <td class="followers"></td>
-        <td>
-        <button class="button">&times;</button>
-        </td>
-        `
+    <img src="https://github.com/Mati-Pereira.png" alt="profile-picture" >
+    <a href="https://github.com/Mati-Pereira">
+    <p>Matheus</p>
+    <span>olá</span>
+    </td>
+    <td class="repositories"></td>
+    <td class="followers"></td>
+    <td>
+    <button class="button">&times;</button>
+    </td>
+    `
     tr.innerHTML = content
     return tr
   }
@@ -109,7 +105,6 @@ export class FavoritesView extends Favorites {
     this.tbody.querySelectorAll('tr')
       .forEach((tr) => {
         tr.remove()
-        console.log(tr);
       })
   }
 }
