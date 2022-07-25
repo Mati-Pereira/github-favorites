@@ -3,6 +3,11 @@
 
 This project consists of studying and understanding SPA concepts, building an application with this way of creating websites.
 
+## Technologies
+
+- HTML
+- CSS
+- JavaScript
 
 ## License
 
