@@ -1,7 +1,5 @@
 
-# SPA Universe 2.0
-
-This project consists of studying and understanding SPA concepts, building an application with this way of creating websites.
+# Github Favorites
 
 ## Technologies
 
